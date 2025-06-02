@@ -1,71 +1,72 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-const images = [
+const eventImages = [
   '/poster1.jpg',
   '/poster2.jpg',
   '/poster3.jpg',
 ]
 
-export default function Slideshow() {
+export default function SlideShow() {
   const [current, setCurrent] = useState(0)
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % images.length)
-  const prevSlide = () => setCurrent((prev) => (prev - 1 + images.length) % images.length)
-
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000)
-    return () => clearInterval(interval)
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev === eventImages.length - 1 ? 0 : prev + 1))
+    }, 4000)
+
+    return () => clearInterval(timer)
   }, [])
 
+  const prevSlide = () => {
+    setCurrent((prev) => (prev === 0 ? eventImages.length - 1 : prev - 1))
+  }
+
+  const nextSlide = () => {
+    setCurrent((prev) => (prev === eventImages.length - 1 ? 0 : prev + 1))
+  }
+
   return (
-    <div className="w-full flex justify-center mt-6">
-      <div className="relative w-[80%] h-64 md:h-96 overflow-hidden rounded-lg shadow-lg">
-        {images.map((img, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${index === current ? 'opacity-100' : 'opacity-0'}`}
-          >
-            <Image
-              src={img}
-              alt={`Slide ${index + 1}`}
-              fill
-              className="object-cover rounded-lg"
-              priority={index === 0}
+    <section id="upcoming" className="bg-red-950 py-20 text-white">
+      <h2 className="text-3xl font-bold text-center mb-10">Upcoming Events</h2>
+
+      <div className="flex items-center justify-center">
+        <div className="relative w-full max-w-2xl px-4">
+          <div className="flex items-center justify-center bg-black/40 p-4 rounded-xl shadow-[ -17px_17px_10px_rgba(0,0,0,0.5) ] transition-all duration-500">
+            <img
+              src={eventImages[current]}
+              alt={`Event ${current + 1}`}
+              className="rounded-xl shadow-[ -17px_17px_10px_rgba(0,0,0,0.5) ] w-full h-[800px] object-cover transition-opacity duration-500"
             />
           </div>
-        ))}
 
-        {/* Tombol navigasi */}
-        <button
-          onClick={prevSlide}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition"
-        >
-          <ChevronLeft size={24} />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition"
-        >
-          <ChevronRight size={24} />
-        </button>
+          <button
+            onClick={prevSlide}
+            className="absolute top-1/2 left-2 transform -translate-y-1/2 text-3xl bg-black bg-opacity-50 px-3 py-1 rounded-full hover:bg-red-600 transition"
+          >
+            ‹
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 text-3xl bg-black bg-opacity-50 px-3 py-1 rounded-full hover:bg-red-600 transition"
+          >
+            ›
+          </button>
 
-        {/* Bullet indicator */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {images.map((_, idx) => (
-            <button
-              key={idx}
-              className={`w-3 h-3 rounded-full ${
-                current === idx ? 'bg-white' : 'bg-white/50'
-              }`}
-              onClick={() => setCurrent(idx)}
-            />
-          ))}
+          <div className="flex justify-center mt-4 gap-2">
+            {eventImages.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrent(index)}
+                className={`w-3 h-3 rounded-full cursor-pointer transition ${
+                  current === index ? 'bg-red-600 scale-110' : 'bg-gray-400'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
