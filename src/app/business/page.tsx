@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
-import Footer from "../components/Footer";
+import { useState } from "react"
+import Link from 'next/link'
 
 const businessData = [
   {
     title: "Spartan Modified",
     description: "Jasa modifikasi mobil offroad dan penyedia aksesoris custom Spartan.",
     image: "/bisnisspartan1.jpg",
+    link: "/profilebusiness/spartan-modified",
   },
   {
     title: "GP Variasi",
@@ -30,14 +31,14 @@ const businessData = [
   },
 ];
 
-const ITEMS_PER_PAGE = 2;
-const totalPages = Math.ceil(businessData.length / ITEMS_PER_PAGE);
+const itemPerPage = 2;
+const totalPages = Math.ceil(businessData.length / itemPerPage);
 
 export default function BusinessPage() {
   const [currentPage, setCurrentPage] = useState(0);
 
-  const start = currentPage * ITEMS_PER_PAGE;
-  const visibleBusinesses = businessData.slice(start, start + ITEMS_PER_PAGE);
+  const start = currentPage * itemPerPage;
+  const visibleBusinesses = businessData.slice(start, start + itemPerPage);
 
   const goToPage = (page: number) => {
     if (page >= 0 && page < totalPages) {
@@ -80,9 +81,9 @@ export default function BusinessPage() {
               <div className="flex flex-col justify-between h-auto md:h-60 max-w-full md:max-w-[calc(100%-16rem)]">
                 <p className="text-white text-2xl font-semibold break-words">{business.title}</p>
                 <p className="text-white text-lg font-regular break-words">{business.description}</p>
-                <button className="bg-white text-black px-4 py-2 rounded-md self-start mt-4">
+                <Link href={business.link ?? "#"} className="bg-white text-black px-4 py-2 rounded-md self-start mt-4">
                   More
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -125,7 +126,6 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }
