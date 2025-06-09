@@ -17,6 +17,7 @@ export default function LoginPage() {
                             type="text"
                             placeholder="Username"
                             className="w-full px-4 py-2 rounded-full bg-white/20 text-white placeholder-white outline-none focus:ring-2 focus:ring-red-500"
+                            required
                         />
                     </div>
 
@@ -29,6 +30,7 @@ export default function LoginPage() {
                             type="password"
                             placeholder="Password"
                             className="w-full px-4 py-2 rounded-full bg-white/20 text-white placeholder-white outline-none focus:ring-2 focus:ring-red-500"
+                            required
                         />
                     </div>
 
